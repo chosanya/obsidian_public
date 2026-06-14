@@ -1,0 +1,73 @@
+# MainWindow.xaml
+
+## Путь
+
+`SmakLivery/MainWindow.xaml`
+
+## Назначение
+
+Файл описывает главное окно, список заказов и контекстное меню команд.
+
+## Исходный код
+
+```xml
+﻿<Window x:Class="SmakLivery.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmakLivery"
+        mc:Ignorable="d"
+		Loaded="Window_Loaded"
+        Title="MainWindow" Height="450" Width="800">
+
+	<Window.Resources>
+		<local:OrderEnumDisplayConverter x:Key="OrderEnumDisplayConverter"/>
+	</Window.Resources>
+	
+	
+	<Grid>
+		<ListView ItemsSource="{Binding Orders}" SelectionMode="Single" 
+				  SelectedItem="{Binding SelectedOrder}" x:Name="OrdersList">
+			<ListView.ContextMenu>
+				<ContextMenu>
+					<!-- Command: Элемент, где расположен ContextMenu. Его контекст данных.Команда, Относительный источник: Предок типа = ContextMenu  -->
+					<MenuItem Header="Новый заказ"
+							  Command="{Binding PlacementTarget.DataContext.AddOrder, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+				    />
+					<MenuItem Header="Редактировать заказ"
+					  Command="{Binding PlacementTarget.DataContext.EditOrder, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+/>
+					<MenuItem Header="Удалить" 
+							    Command="{Binding PlacementTarget.DataContext.DeleteOrder, RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
+								CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+				</ContextMenu>
+			</ListView.ContextMenu>
+				<ListView.View>
+				<GridView>
+					<GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"/>
+					<GridViewColumn Header="Адрес" DisplayMemberBinding="{Binding Address}"/>
+					<GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status, Converter={StaticResource OrderEnumDisplayConverter}}"/>
+					<GridViewColumn Header="ФИО " DisplayMemberBinding="{Binding CourierName}"/>
+					<GridViewColumn Header="Транспорт" DisplayMemberBinding="{Binding Transport}"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+	</Grid>
+</Window>
+```
+
+## Разбор
+
+Здесь видны Binding к `Orders`, `SelectedOrder` и командам [[Класс — MainViewModel]].
+
+## Факты из кода
+
+- Файл входит в проект `SmakLivery`.
+- Исходный код выше сохранен без правок.
+
+## Связанные заметки
+
+- [[00_Обзор]]
+- [[02_Архитектура]]
+- [[09_Проблемные_места]]
